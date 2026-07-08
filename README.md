@@ -1,5 +1,3 @@
-Here's a **professional and visually attractive GitHub README** with logos, badges, icons, and sections that look much better than a typical academic project.
-
 # README Header
 
 ```markdown
