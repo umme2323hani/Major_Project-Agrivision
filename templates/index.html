@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Prediction Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Basic reset and styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f1f1f1;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/image/1stpageimage.jpg');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        .form-container {
+            background-image: url('/static/image/1stpageimage.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 80%;
+            max-width: 850px;
+            border: 1px solid #ddd;
+            overflow-y: auto;
+            max-height: 95vh;
+            position: relative;
+        }
+
+        /* Home image styling */
+        .home-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 70px; /* Adjusted width for background */
+    height: 70px; /* Adjusted height for background */
+    background-color: white; /* Default background color */
+    border-radius: 50%; /* Circular background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.home-btn:hover {
+    background-color: #3498db; /* Change background color on hover */
+    transform: scale(1.1); /* Slightly enlarge the button */
+}
+
+.home-btn img {
+    width: 60%; /* Size of the image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10%; /* Optional: Make the image circular */
+    transition: transform 0.3s ease; /* Add hover effect to image */
+}
+
+.home-btn img:hover {
+    transform: scale(1.15); /* Zoom the image slightly */
+}
+
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Form elements */
+        label {
+            font-size: 1.1rem;
+            color: #100f0f;
+            display: inline-block; /* Makes the background size fit the text */
+            margin-bottom: 10px;
+            font-weight: 950;
+            background-color: white; /* White background */
+            padding: 2px 5px; /* Optional: Adds some spacing around the text */
+            border-radius: 4px; /* Optional: Rounds the corners for a soft look */
+        }
+
+        input[type="number"], input[type="submit"], select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            background-color: #fafafa;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        /* Color code for input fields */
+        input[type="number"] {
+            background-color: #e8f4f9;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Style for placeholder text */
+        input::placeholder {
+             color: #999; /* Lighter gray color */
+             opacity: 1; /* Ensures the placeholder color is visible */
+        }
+
+        input[type="number"]:focus, input[type="submit"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+        }
+
+        /* Make the form more readable on smaller screens */
+        @media (max-width: 768px) {
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+            }
+
+            input[type="number"], input[type="submit"], select {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
+        button:hover {
+        transform: scale(1.1); /* Slightly zooms in */
+        transition: transform 0.2s ease-in-out; /* Smooth transition */
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <button type="button" onclick="fetchAutofillData()" style="position: absolute; top: 25px; right: 10px; background: rgb(0, 0, 0); border: 5px solid #efebeb; border-radius: 5px; padding: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);">
+            <img src="/static/image/insert.png" alt="Insert Values" style="width: 90px; height: 50px;" />
+        </button>
+        
+        <a href="/" class="home-btn">
+            <img src="/static/image/home.jpg" alt="Home">
+        </a>
+        <h1><b>AGRIVISION</b></h1>
+        <form action="/predict" method="post">
+            <label for="moisture">Moisture (%):</label>
+            <input type="number" id="moisture" name="moisture" placeholder="Range: 0-100" required>
+
+            <label for="ph">pH Value:</label>
+            <input type="number" id="ph" name="ph" step="0.01" placeholder="Range: 4.0-9.0" required>
+
+            <label for="sandy">Sandy (1/0):</label>
+            <input type="number" id="sandy" name="sandy" min="0" max="1" placeholder="0 for No, 1 for Yes" required>
+
+            <label for="chalky">Chalky (1/0):</label>
+            <input type="number" id="chalky" name="chalky" min="0" max="1" placeholder="0 for No, 1 for Yes" required>
+
+            <label for="clay">Clay (1/0):</label>
+            <input type="number" id="clay" name="clay" min="0" max="1" placeholder="0 for No, 1 for Yes" required>
+
+            <label for="nitrogen">Nitrogen (N):</label>
+            <input type="number" id="nitrogen" name="nitrogen" placeholder="Range: 0-300" required>
+
+            <label for="phosphorus">Phosphorus (P):</label>
+            <input type="number" id="phosphorus" name="phosphorus" placeholder="Range: 0-300" required>
+
+            <label for="potassium">Potassium (K):</label>
+            <input type="number" id="potassium" name="potassium" placeholder="Range: 0-300" required>
+
+            <label for="soil_moisture_level">Soil Moisture Level (1-100%):</label>
+            <input type="number" id="soil_moisture_level" name="soil_moisture_level" min="1" max="100" placeholder="Range: 1-100" required>
+
+            <input type="submit" value="Predict Crop Type">
+        </form>
+    </div>
+
+    <script>
+        function fetchAutofillData() {
+            fetch('/autofill')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('moisture').value = data.moisture !== undefined ? data.moisture : '';
+                document.getElementById('ph').value = data.ph !== undefined ? data.ph : '';
+                document.getElementById('sandy').value = data.sandy !== undefined ? data.sandy : '';
+                document.getElementById('chalky').value = data.chalky !== undefined ? data.chalky : '';
+                document.getElementById('clay').value = data.clay !== undefined ? data.clay : '';
+                document.getElementById('nitrogen').value = data.nitrogen !== undefined ? data.nitrogen : '';
+                document.getElementById('phosphorus').value = data.phosphorus !== undefined ? data.phosphorus : '';
+                document.getElementById('potassium').value = data.potassium !== undefined ? data.potassium : '';
+                document.getElementById('soil_moisture_level').value = data.soil_moisture_level !== undefined ? data.soil_moisture_level : '';
+            })
+            .catch(error => alert(`Error fetching autofill data: ${error}`));
+        }
+    </script>
+    
+</body>
+
+</html>

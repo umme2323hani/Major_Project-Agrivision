@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Prediction Results</title>
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-image: url('/static/image/2ndpageimage.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(249, 249, 249, 0.8);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            position: relative; /* Allows positioning of child elements */
+        }
+
+        /* Column Styles */
+        .column {
+            flex: 1;
+            min-width: 300px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Title Style */
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: xx-large;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        /* Section Title Style */
+        .section-title {
+            font-size: 29px;
+            font-family: 'Times New Roman', Times, serif;
+            color: #333;
+            margin-top: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 3px;
+        }
+
+        /* List Styles */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 5px 0;
+        }
+
+        /* List Item Styles */
+        li {
+            background: #fff;
+            margin: 3px 0;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* Highlighted Text Style */
+        .highlight {
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        /* Predicted Results List Style */
+        .predicted-results li {
+            font-size: 20px;
+        }
+
+        /* Special Style for Crop Name */
+        .crop-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF5733;
+        }
+
+        /* Input Variables List Style */
+        .input-variables {
+            font-size: 12px;
+            list-style-type: circle;
+        }
+
+        /* Button Styles */
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #8a9aac;
+        }
+
+        /* Form container positioning */
+        .form-container {
+            position: absolute; /* Position relative to the container */
+            bottom: 15px; /* Distance from the bottom */
+            right: 15px; /* Distance from the right */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Crop Prediction Results</h2>
+
+        <!-- Flex container for columns -->
+        <div style="display: flex; width: 100%; flex-wrap: wrap;">
+            <!-- Predicted Results Column -->
+            <div class="column">
+                <div class="section-title">Predicted Results</div>
+                <ul class="predicted-results">
+                    {% for key, value in prediction.items() %}
+                        <li class="{{ 'crop-name' if key == 'Crop Name' else '' }}">
+                            <span class="highlight">{{ key }}:</span> {{ value }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Input Variables Column -->
+            <div class="column">
+                <div class="section-title">Input Variables</div>
+                <ul class="input-variables">
+                    {% for key, value in target_values.items() %}
+                        <li>{{ key }}: {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Form to get crop recommendations based on the predicted crop -->
+        <div class="form-container">
+            <form action="/recommend" method="POST">
+                <!-- Hidden input to send the predicted crop to the '/recommend' route -->
+                <input type="text" name="predicted_crop" value="{{ prediction['Crop Name'] }}" hidden>
+                <button type="submit" class="button">Get Recommended Crops</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Button Container -->
+    <div class="button-container">
+        <button class="button" onclick="window.history.back()">Back</button>
+    </div>
+
+</body>
+</html>
